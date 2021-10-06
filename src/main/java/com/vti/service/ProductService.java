@@ -111,6 +111,7 @@ public class ProductService implements IProductService {
 		product.setRam(productRam);
 		product.setMemory(productMemory);
 		product.setBrand(productBrand);
+		product.setCategory(request.getCategory());
 		product.setQuantity(request.getQuantity());
 		product.setCamera(request.getCamera());
 		product.setColor(request.getColor());
@@ -138,6 +139,7 @@ public class ProductService implements IProductService {
 		product.setRam(productRam);
 		product.setMemory(productMemory);
 		product.setBrand(productBrand);
+		product.setCategory(request.getCategory());
 		product.setQuantity(request.getQuantity());
 		product.setCamera(request.getCamera());
 		product.setColor(request.getColor());

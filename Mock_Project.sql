@@ -127,6 +127,7 @@ DROP TABLE IF EXISTS `Order`;
 CREATE TABLE `Order`(
 	order_id		INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `description`	NVARCHAR(1000),
+    fullname		NVARCHAR(50) NOT NULL,
     quantity		SMALLINT UNSIGNED NOT NULL,
     total_price		DOUBLE UNSIGNED NOT NULL,
     address			VARCHAR(500) NOT NULL,
