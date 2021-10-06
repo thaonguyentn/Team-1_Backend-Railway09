@@ -18,7 +18,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderResponse {
 
+	private int orderID;
 	private String description;
+	private String fullname;
+	private String address;
+	private String phone;
+	private AccountResponse accountResponse;
+	private short quantity;
 	private Double totalPrice;
 	private Date orderDate;
 	

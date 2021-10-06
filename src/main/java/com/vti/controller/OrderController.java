@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vti.entity.Account;
 import com.vti.entity.Order;
 import com.vti.entity.OrderDetail;
 import com.vti.entity.Product;
@@ -26,6 +27,7 @@ import com.vti.enumerate.OrderStatusEnum;
 import com.vti.exception.CustomerException;
 import com.vti.exception.NotFoundException;
 import com.vti.request.OrderRequest;
+import com.vti.response.AccountResponse;
 import com.vti.response.OrderDetailResponse;
 import com.vti.response.OrderResponse;
 import com.vti.response.ProductResponse;
@@ -53,8 +55,13 @@ public class OrderController {
 
 			@Override
 			public OrderResponse apply(Order order) {
-				OrderResponse response = new OrderResponse(order.getDescription(), order.getTotal_price(), 
-						order.getOrder_date(), order.getStatus());
+				Account account = order.getAccount();
+				AccountResponse accountResponse = new AccountResponse(account.getAccountId(), account.getUsername(),
+						account.getFullname(), account.getEmail(), account.getGender(), account.getPhonenumber(),
+						account.getAddress(),account.getPathImage(), account.getRegisterDate());
+				OrderResponse response = new OrderResponse(order.getOrder_id(),order.getDescription(),
+						order.getFullname(),order.getAddress(),order.getPhone() ,accountResponse,order.getQuantity(),
+						order.getTotal_price(), order.getOrder_date(), order.getStatus());
 				return response;
 			}
 		});
@@ -73,8 +80,13 @@ public class OrderController {
 
 			@Override
 			public OrderResponse apply(Order order) {
-				OrderResponse response = new OrderResponse(order.getDescription(), order.getTotal_price(), 
-						order.getOrder_date(), order.getStatus());
+				Account account = order.getAccount();
+				AccountResponse accountResponse = new AccountResponse(account.getAccountId(), account.getUsername(),
+						account.getFullname(), account.getEmail(), account.getGender(), account.getPhonenumber(),
+						account.getAddress(),account.getPathImage(), account.getRegisterDate());
+				OrderResponse response = new OrderResponse(order.getOrder_id(),order.getDescription(),
+						order.getFullname(),order.getAddress(),order.getPhone() ,accountResponse,order.getQuantity(),
+						order.getTotal_price(), order.getOrder_date(), order.getStatus());
 				return response;
 			}
 		});
@@ -94,9 +106,11 @@ public class OrderController {
 
 			@Override
 			public OrderResponse apply(Order order) {
-				
-				OrderResponse response = new OrderResponse(order.getDescription(), order.getTotal_price(), order.getOrder_date(),
-						order.getStatus());
+				OrderResponse response = new OrderResponse();
+				response.setDescription(order.getDescription());
+				response.setTotalPrice(order.getTotal_price());
+				response.setOrderDate(order.getOrder_date());
+				response.setStatus(order.getStatus());
 				return response;
 			}
 		});
