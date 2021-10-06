@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Product", catalog = "Mock_Project")
+@Table(name = "Product", catalog = "heroku_1f3b8eab4ddb340")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 

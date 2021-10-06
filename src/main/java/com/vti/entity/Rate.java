@@ -19,7 +19,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name = "Rate", catalog = "Mock_Project")
+@Table(name = "Rate", catalog = "heroku_1f3b8eab4ddb340")
 public class Rate implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

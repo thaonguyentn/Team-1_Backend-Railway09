@@ -26,7 +26,7 @@ import com.vti.enumerate.AccountRole;
 import com.vti.enumerate.AccountStatus;
 
 @Entity
-@Table(name = "`Account`", catalog = "Mock_Project")
+@Table(name = "`Account`", catalog = "heroku_1f3b8eab4ddb340")
 public class Account implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "`Registation_Account_Token`", catalog = "Mock_Project")
+@Table(name = "`Registation_Account_Token`", catalog = "heroku_1f3b8eab4ddb340")
 public class RegistationAccountToken implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

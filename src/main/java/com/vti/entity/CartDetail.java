@@ -16,7 +16,7 @@ import com.vti.enumerate.CartDetailStatus;
 import com.vti.enumerate.CartDetailStatusConverter;
 
 @Entity
-@Table(name = "CartDetail", catalog = "Mock_Project")
+@Table(name = "CartDetail", catalog = "heroku_1f3b8eab4ddb340")
 public class CartDetail implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "`Reset_Password_Token`", catalog = "Mock_Project")
+@Table(name = "`Reset_Password_Token`", catalog = "heroku_1f3b8eab4ddb340")
 public class ResetPasswordToken implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

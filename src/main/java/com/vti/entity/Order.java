@@ -25,7 +25,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.vti.enumerate.OrderStatusEnum;
 
 @Entity
-@Table(name = "`Order`", catalog = "Mock_Project")
+@Table(name = "`Order`", catalog = "heroku_1f3b8eab4ddb340")
 public class Order implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

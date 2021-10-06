@@ -15,7 +15,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Table(name = "OrderDetail", catalog = "Mock_Project")
+@Table(name = "OrderDetail", catalog = "heroku_1f3b8eab4ddb340")
 public class OrderDetail implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
