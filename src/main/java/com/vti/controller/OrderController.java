@@ -107,6 +107,7 @@ public class OrderController {
 			@Override
 			public OrderResponse apply(Order order) {
 				OrderResponse response = new OrderResponse();
+				response.setOrderID(order.getOrder_id());
 				response.setDescription(order.getDescription());
 				response.setTotalPrice(order.getTotal_price());
 				response.setOrderDate(order.getOrder_date());
