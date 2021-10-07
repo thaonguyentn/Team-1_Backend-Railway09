@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +47,7 @@ public class OrderController {
 	 * filter theo status
 	 * fix cứng giá trị filter						
 	 */
-	
+	@PreAuthorize("hasRole('Admin')")
 	@GetMapping(value = "/all")
 	public ResponseEntity<?> getAllOrder(Pageable pageable){
 		Page<Order> pageOrder = orderService.getAllOrder(pageable);
@@ -71,7 +72,7 @@ public class OrderController {
 	/**
 	 * API getAll Order for Admin							
 	 */
-	
+	@PreAuthorize("hasRole('Admin')")
 	@GetMapping
 	public ResponseEntity<?> getAllOrderByStatus(@RequestParam OrderStatusEnum status, Pageable pageable){
 		Page<Order> pageOrder = orderService.getAllOrderByStatus(status, pageable);
@@ -97,7 +98,7 @@ public class OrderController {
 	 * API getAll Order for Account	
 	 * trả ra toàn bộ order theo accountID						
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@GetMapping(value = "/{accountId}")
 	public ResponseEntity<?> findByUserId(@PathVariable(name = "accountId") int accountId, Pageable pageable){
 		Page<Order> pageOrder = orderService.findByUserId(accountId, pageable);
@@ -125,7 +126,7 @@ public class OrderController {
 	 * 		xóa CartDetail đã order									
 	 * 		fix lại giá trong Cart
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@PostMapping(value = "/{accountId}")
 	public ResponseEntity<?> createOrder(@PathVariable(name = "accountId") int accountID, @RequestBody OrderRequest request)
 			throws CustomerException{
@@ -140,7 +141,7 @@ public class OrderController {
 	 * gọi lần 2 sẽ chuyển từ Active -> End
 	 * gọi lần 3 sẽ chuyển từ End -> Not_Active									
 	 */
-	
+	@PreAuthorize("hasRole('Admin')")
 	@PutMapping(value = "/{orderID}")
 	public ResponseEntity<?> updateOrder(@PathVariable (name = "orderID") int orderID){
 		orderService.updateOrder(orderID);
@@ -155,7 +156,7 @@ public class OrderController {
 	 * 1 thư sẽ được gửi về email của khách đặt hàng									
 	 * @throws CustomerException 
 	 */
-	
+	@PreAuthorize("hasRole('Admin')")
 	@PutMapping()
 	public ResponseEntity<?> endOrder(@RequestParam (name = "orderID") int orderID,@RequestBody OrderRequest request) throws CustomerException{
 		orderService.endOrder(orderID, request);
@@ -167,7 +168,7 @@ public class OrderController {
 	/**
 	 * API lấy ListOrderDetail = OrderID
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@GetMapping(value = "/{id}/orderDetails")
 	public ResponseEntity<?> getListOrderDetail(@PathVariable(name = "id") int id){
 		Order order = orderService.getOrderByID(id);

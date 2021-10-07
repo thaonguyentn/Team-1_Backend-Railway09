@@ -3,6 +3,7 @@ package com.vti.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class CartDetailController {
 	 * Thông số sẽ đồng bộ với cart có cartID tương ứng accountID
 	 * @throws CustomerException 
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@PostMapping
 	public ResponseEntity<?> createCartDetail(@RequestParam(name = "productId") int productId,@RequestParam(name = "accountId") int accountId) throws CustomerException{
 		cartdetailService.createCartDetail(productId, accountId);
@@ -44,7 +45,7 @@ public class CartDetailController {
 	/**
 	 * API get CartDetail by ID
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getCartDetailById(@PathVariable(name = "id") int id){
 		CartDetail cartDetail = cartdetailService.getCartDetailById(id);
@@ -72,7 +73,7 @@ public class CartDetailController {
 	 * API delete CartDetail by CartdetailID
 	 * Thông số sẽ đồng bộ với cart có cartID tương ứng accountID
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteCartDetail(@PathVariable(name = "id") int id) {
 		CartDetail cartDetail = cartdetailService.getCartDetailById(id);
@@ -87,7 +88,7 @@ public class CartDetailController {
 	 * API update CartDetail by CartdetailID ( tăng quantity )
 	 * Thông số sẽ đồng bộ với cart có cartID tương ứng accountID
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<?> updateCartDetailUp(@PathVariable(name = "id") int id) {
 		CartDetail cartDetail = cartdetailService.getCartDetailById(id);
@@ -102,7 +103,7 @@ public class CartDetailController {
 	 * API update CartDetail by CartdetailID ( giảm quantity )
 	 * Thông số sẽ đồng bộ với cart có cartID tương ứng accountID
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@PutMapping()
 	public ResponseEntity<?> updateCartDetailDown(@RequestParam(name = "id") int id) {
 		CartDetail cartDetail = cartdetailService.getCartDetailById(id);
@@ -116,7 +117,7 @@ public class CartDetailController {
 	/**
 	 * API update CartDetailStatus -> order
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@PostMapping(value = "/{id}")
 	public ResponseEntity<?> updateStatusCartDetail(@PathVariable(name = "id") int id){
 		CartDetail cartDetail = cartdetailService.getCartDetailById(id);

@@ -187,7 +187,7 @@ public class ProductController {
 	/**
 	 * API create Product 
 	 */
-	
+	@PreAuthorize("hasRole('Admin')")
 	@PostMapping
 	public ResponseEntity<?> createProduct(@RequestBody ProductRequest request){
 		productService.createProduct(request);
@@ -197,7 +197,7 @@ public class ProductController {
 	/**
 	 * API update Product 
 	 */
-	
+	@PreAuthorize("hasRole('Admin')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<?> updateProduct(@PathVariable(name = "id") int productId, @RequestBody ProductRequest request){
 		productService.updateProduct(productId, request);

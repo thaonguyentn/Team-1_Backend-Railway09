@@ -118,7 +118,7 @@ public class AccountController {
 		accountService.deleteAccount(id);
 		return new ResponseEntity<String>("Delete successfully!", HttpStatus.OK);
 	}
-
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<?> updateAccount(@PathVariable(name = "id") int id, @RequestBody AccountUpdateRequest request){
 		Account account = accountService.getAccountById(id);
