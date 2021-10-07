@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class CartController {
 	/**
 	 * API lấy cart = accountID
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getCartById(@PathVariable(name = "id") int id){
 		Cart cart = cartService.getCartbyId(id);
@@ -48,7 +49,7 @@ public class CartController {
 	/**
 	 * API lấy ListCartDetail = CartID
 	 */
-	
+	@PreAuthorize("hasAnyRole('User','Admin')")
 	@GetMapping(value = "/{id}/cartDetails")
 	public ResponseEntity<?> getListCartDetail(@PathVariable(name = "id") int id){
 		Cart cart = cartService.getCartbyId(id);

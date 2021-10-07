@@ -17,6 +17,8 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,7 +41,7 @@ public class ApiHandleException extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleAllException(Exception e, WebRequest request) {
 		ErrorResponse error = new ErrorResponse();
 		error.setMessage(e.getMessage());
-		return super.handleExceptionInternal(e, error, null, HttpStatus.BAD_REQUEST, request);
+		return super.handleExceptionInternal(e, error, null, HttpStatus.INTERNAL_SERVER_ERROR, request);
 
 	}
 
@@ -71,6 +73,14 @@ public class ApiHandleException extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(body, headers, status);
 
+	}
+	
+	@ExceptionHandler({ AccessDeniedException.class, UsernameNotFoundException.class })
+	public ResponseEntity<Object> handleForbidenException(AccessDeniedException ex, WebRequest request) {
+		ErrorResponse errors = new ErrorResponse();
+		errors.setField(String.format(HttpStatus.FORBIDDEN.name() + ": %s ", request.getRemoteUser()));
+		errors.setMessage(ex.getMessage());
+		return super.handleExceptionInternal(ex, errors, null, HttpStatus.FORBIDDEN, request);
 	}
 
 	private String getMessage(MessageSourceResolvable resolvable, WebRequest request) {
