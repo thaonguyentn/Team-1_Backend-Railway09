@@ -78,12 +78,9 @@ public class AccountService implements IAccountService{
 		Account account = new Account(request.getUsername(), request.getFullname(), request.getEmail(),
 				 passwordEncoder.encode(request.getPassword()));
 		
-		account_repo.save(account);
-		
 		createNewRegistrationUserToken(account);
-		
-		sendConfirmUserRegistrationViaEmail(account.getEmail());
-		
+		sendConfirmUserRegistrationViaEmail(account.getEmail());	
+		account_repo.save(account);		
 		createCart(account);
 	}
 	
