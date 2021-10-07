@@ -30,8 +30,8 @@ public class EmailService implements IEmailService {
 		Account account = accountService.getAccountByEmail(email);
 		String token = registrationUserTokenRepository.findByUserId(account.getAccountId());
 
-		String confirmationUrl = "http://localhost:8080/api/v3/register/activeUser?token=" + token;
-//		String confirmationUrl = "http://localhost:3000/activeUser?token=" + token;
+//		String confirmationUrl = "http://localhost:8080/api/v3/register/activeUser?token=" + token;
+		String confirmationUrl = "http://localhost:3000/activeUser?token=" + token;
 		
 		String subject = "Xác Nhận Đăng Ký Account";
 		String content = "Bạn đã đăng ký thành công. Click vào link dưới đây để kích hoạt tài khoản \n"

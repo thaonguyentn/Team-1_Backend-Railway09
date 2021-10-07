@@ -25,8 +25,8 @@ public class ResetPasswordService implements IResetPasswordService{
 		Account account = accountService.getAccountByEmail(email);
 		String token = resetPasswordRepo.findByUserId(account.getAccountId());
 		
-		String confirmationUrl = "http://localhost:8080/api/v3/resetpassword/reset?token=" + token;
-//		String confirmationUrl = "http://localhost:3000/resetPassword?token=" + token;
+//		String confirmationUrl = "http://localhost:8080/api/v3/resetpassword/reset?token=" + token;
+		String confirmationUrl = "http://localhost:3000/resetPassword?token=" + token;
 		
 		String subject = "Xác Nhận Reset Password";
 		String content = "Bạn đã reset mật khẩu thành công. Click vào link dưới đây để set password về mặc định (123456) \n"
