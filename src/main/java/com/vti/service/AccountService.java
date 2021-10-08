@@ -79,7 +79,9 @@ public class AccountService implements IAccountService{
 				 passwordEncoder.encode(request.getPassword()));
 		final String newToken = UUID.randomUUID().toString();
 		RegistationAccountToken token = new RegistationAccountToken(newToken, account);
+
 		sendConfirmUserRegistrationViaEmail(request.getEmail(), newToken);	
+
 		account_repo.save(account);
 		token_repo.save(token);	
 		createCart(account);

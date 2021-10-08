@@ -87,7 +87,7 @@ public class CartDetailService implements ICartDetailService {
 		CartDetail cartDetail = cartdetailRepo.getById(id);
 		int cartID = cartDetail.getCart().getCart_id();
 
-		updateCartDownAll(cartID, cartDetail);
+		updateCartDown(cartID, cartDetail);
 
 		cartdetailRepo.deleteById(id);
 
@@ -121,7 +121,8 @@ public class CartDetailService implements ICartDetailService {
 		cartDetail.setQuantity(quantity);
 
 		if (quantity == 0) {
-			deleteCartDetail(id);
+			updateCartDown(cartID, cartDetail);
+			cartdetailRepo.deleteById(cartDetail.getCartdetail_id());
 
 		} else {
 			cartdetailRepo.save(cartDetail);
