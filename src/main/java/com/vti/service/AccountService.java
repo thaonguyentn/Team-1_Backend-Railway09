@@ -79,7 +79,7 @@ public class AccountService implements IAccountService{
 				 passwordEncoder.encode(request.getPassword()));
 		final String newToken = UUID.randomUUID().toString();
 		RegistationAccountToken token = new RegistationAccountToken(newToken, account);
-		sendConfirmUserRegistrationViaEmail(account.getEmail(), token.getToken());	
+		sendConfirmUserRegistrationViaEmail(request.getEmail(), newToken);	
 		account_repo.save(account);
 		token_repo.save(token);	
 		createCart(account);
@@ -125,6 +125,7 @@ public class AccountService implements IAccountService{
 		RegistationAccountToken active_token = token_repo.findByToken(token);
 		
 		Account account = active_token.getAccount();
+
 		account.setStatus(AccountStatus.Active);
 		
 		account_repo.save(account);
