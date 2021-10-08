@@ -40,5 +40,10 @@ public Page<Account> getAllAccounts(Pageable pageable);
 	public void resetPassword(String email);
 	
 	public void activeResetPassword(String token);
+
+	/**
+	 * Function gửi mail
+	 */
+	void sendConfirmUserRegistrationViaEmail(String email, String token);
 	
 }

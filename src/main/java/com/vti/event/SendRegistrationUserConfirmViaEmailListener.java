@@ -15,11 +15,11 @@ public class SendRegistrationUserConfirmViaEmailListener
 
 	@Override
 	public void onApplicationEvent(OnSendRegistrationUserConfirmViaEmailEvent event) {
-		sendConfirmViaEmail(event.getEmail());
+		sendConfirmViaEmail(event.getEmail(),event.getToken());
 	}
 
-	private void sendConfirmViaEmail(String email) {
-		emailService.sendRegistrationUserConfirm(email);
+	private void sendConfirmViaEmail(String email,String token) {
+		emailService.sendRegistrationUserConfirm(email,token);
 	}
 	
 	

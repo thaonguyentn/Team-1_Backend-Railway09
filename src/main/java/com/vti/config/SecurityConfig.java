@@ -62,16 +62,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/api/v1/login/**").permitAll()
-								.antMatchers("/api/v2/products/**").permitAll()
-								.antMatchers("/api/v3/register/**").permitAll()
-								.antMatchers("/api/v4/cartdetail/**").permitAll()
-								.antMatchers("/api/v5/cart/**").permitAll()
-								.antMatchers("/api/v5/orders/**").permitAll()
-								.antMatchers("/api/v3/resetpassword/**").permitAll()
-								.anyRequest().authenticated().and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().httpBasic().and().cors().and().csrf()
-				.disable().addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.authorizeRequests()
+				.antMatchers("/api/v1/login/**", "/api/v1/productbrandcontrollers**",
+						"/api/v1/productmemorycontrollers**", "/api/v1/productramcontrollers**")
+				.permitAll().antMatchers("/api/v2/products/**").permitAll().antMatchers("/api/v3/register/**")
+				.permitAll().antMatchers("/api/v3/resetpassword/**").permitAll().anyRequest().authenticated().and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().httpBasic().and()
+				.cors().and().csrf().disable()
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 	};
 

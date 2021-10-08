@@ -77,10 +77,11 @@ public class AccountService implements IAccountService{
 	public void createAccount(AccountRequest request) {
 		Account account = new Account(request.getUsername(), request.getFullname(), request.getEmail(),
 				 passwordEncoder.encode(request.getPassword()));
-		
-		createNewRegistrationUserToken(account);
-		sendConfirmUserRegistrationViaEmail(account.getEmail());	
-		account_repo.save(account);		
+		final String newToken = UUID.randomUUID().toString();
+		RegistationAccountToken token = new RegistationAccountToken(newToken, account);
+		sendConfirmUserRegistrationViaEmail(account.getEmail(), token.getToken());	
+		account_repo.save(account);
+		token_repo.save(token);	
 		createCart(account);
 	}
 	
@@ -140,7 +141,7 @@ public class AccountService implements IAccountService{
 		// create new token for confirm Registration
 		final String newToken = UUID.randomUUID().toString();
 		RegistationAccountToken token = new RegistationAccountToken(newToken, account);
-
+		sendConfirmUserRegistrationViaEmail(account.getEmail(), token.getToken());	
 		token_repo.save(token);
 	}
 	
@@ -162,8 +163,8 @@ public class AccountService implements IAccountService{
 	 */
 
 	@Override
-	public void sendConfirmUserRegistrationViaEmail(String email) {
-		eventPublisher.publishEvent(new OnSendRegistrationUserConfirmViaEmailEvent(email));
+	public void sendConfirmUserRegistrationViaEmail(String email,String token) {
+		eventPublisher.publishEvent(new OnSendRegistrationUserConfirmViaEmailEvent(email, token));
 		
 	}
 	
@@ -221,6 +222,12 @@ public class AccountService implements IAccountService{
 			account.setPassword(passwordEncoder.encode(request.getPassword()));
 		
 		account_repo.save(account);
+	}
+
+	@Override
+	public void sendConfirmUserRegistrationViaEmail(String email) {
+		// TODO Auto-generated method stub
+		
 	}
 		
 }
