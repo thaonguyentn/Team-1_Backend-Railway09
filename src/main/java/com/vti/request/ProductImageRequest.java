@@ -14,5 +14,4 @@ import lombok.Setter;
 public class ProductImageRequest {
 
 	private String pathIMG;
-	private Product product;
 }
