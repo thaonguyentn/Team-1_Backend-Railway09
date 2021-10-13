@@ -1,5 +1,7 @@
 package com.vti.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class ProductImageController {
 	 */
 	
 	@PostMapping(value = "/{productID}")
-	public ResponseEntity<?> createOrder(@PathVariable(name = "productID") int productID, ProductImageRequest request){
+	public ResponseEntity<?> createOrder(@PathVariable(name = "productID") int productID,List<ProductImageRequest>  request){
 		imgService.createIMGforProduct(productID, request);
 		return new ResponseEntity<String>("Thêm ảnh thành công!!",  HttpStatus.CREATED);
 	}

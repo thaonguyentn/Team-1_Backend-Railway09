@@ -1,5 +1,7 @@
 package com.vti.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +22,16 @@ public class ProductImageService implements IProductImageService{
 	private IProductRepository productRepo;
 
 	@Override
-	public void createIMGforProduct(int productID, ProductImageRequest request) {
+	public void createIMGforProduct(int productID,List<ProductImageRequest>  request) {
 		Product product = productRepo.getById(productID);
 		if (product == null) {
 			throw new NotFoundException("Sản phẩm không tồn tại");	
 		}
-		ProductImage img = new ProductImage(request.getPathIMG(), product);
+		for (ProductImageRequest productImageRequest : request) {
+		ProductImage img = new ProductImage(productImageRequest.getPathIMG(), product);
 		imageRepo.save(img);
+		}
+		
 	}
 
 }
