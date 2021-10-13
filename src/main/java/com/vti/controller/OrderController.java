@@ -97,6 +97,9 @@ public class OrderController {
 		Order order = orderService.getOrderByID(id);
 		OrderResponse response = new OrderResponse();
 		response.setOrderID(order.getOrder_id());
+		response.setFullname(order.getFullname());
+		response.setAddress(order.getAddress());
+		response.setPhone(order.getPhone());
 		response.setDescription(order.getDescription());
 		response.setTotalPrice(order.getTotal_price());
 		response.setOrderDate(order.getOrder_date());
