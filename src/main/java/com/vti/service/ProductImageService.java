@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.vti.entity.Product;
 import com.vti.entity.ProductImage;
@@ -22,7 +23,8 @@ public class ProductImageService implements IProductImageService{
 	private IProductRepository productRepo;
 
 	@Override
-	public void createIMGforProduct(int productID,List<ProductImageRequest>  request) {
+	public void createIMGforProduct(int productID,@RequestBody List<ProductImageRequest>  request) {
+		System.out.println(request.toString());
 		Product product = productRepo.getById(productID);
 		if (product == null) {
 			throw new NotFoundException("Sản phẩm không tồn tại");	
