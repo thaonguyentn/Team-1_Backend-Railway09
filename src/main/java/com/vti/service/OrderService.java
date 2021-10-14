@@ -92,7 +92,7 @@ public class OrderService implements IOrderService{
 		 */
 		for (CartDetail cartDetail : listCartDetail2) {
 			 quantity = quantity + cartDetail.getQuantity();
-			 totalPrice = totalPrice + (cartDetail.getPrice()*cartDetail.getQuantity()*cartDetail.getProduct().getDiscount()/100);
+			 totalPrice = totalPrice + (cartDetail.getPrice()*cartDetail.getQuantity()-cartDetail.getPrice()*cartDetail.getQuantity()*cartDetail.getProduct().getDiscount()/100);
 		}
 		Account account = accountRepo.getById(accountID);		
 		Order order = new Order((short) quantity, totalPrice,request.getFullname(), request.getAddress(),request.getPhone() ,account);
