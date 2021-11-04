@@ -72,7 +72,8 @@ public class OrderController {
 	 */
 	@PreAuthorize("hasRole('Admin')")
 	@GetMapping
-	public ResponseEntity<?> getAllOrderByStatus(@RequestParam OrderStatusEnum status, Pageable pageable) {
+	public ResponseEntity<?> getAllOrderByStatus(@RequestParam(required = false) OrderStatusEnum status,
+			Pageable pageable) {
 		Page<Order> pageOrder = orderService.getAllOrderByStatus(status, pageable);
 
 		Page<OrderResponse> response = pageOrder.map(new Function<Order, OrderResponse>() {
@@ -93,7 +94,7 @@ public class OrderController {
 	}
 
 	@GetMapping(value = "/order/{id}")
-	public ResponseEntity<?> getorderbyid(@PathVariable(name = "id") int id){
+	public ResponseEntity<?> getorderbyid(@PathVariable(name = "id") int id) {
 		Order order = orderService.getOrderByID(id);
 		OrderResponse response = new OrderResponse();
 		response.setOrderID(order.getOrder_id());
