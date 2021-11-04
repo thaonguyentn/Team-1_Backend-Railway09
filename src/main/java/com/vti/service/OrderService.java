@@ -32,51 +32,51 @@ import com.vti.repository.IProductRepository;
 import com.vti.request.OrderRequest;
 
 @Service
-public class OrderService implements IOrderService{
+public class OrderService implements IOrderService {
 
 	@Autowired
 	private IOrderRepository orderRepo;
-	
+
 	@Autowired
 	private IAccountRepository accountRepo;
-	
+
 	@Autowired
 	private ICartRepository cartRepo;
-	
+
 	@Autowired
 	private IOrderDetailRepository orderDetailRepo;
-	
+
 	@Autowired
 	private ICartDetailRepository cartDetailRepo;
-	
+
 	@Autowired
 	private IProductRepository productRepo;
-	
+
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
-	
+
 	@Override
 	public Order getOrderByID(int orderID) {
 		Order order = orderRepo.getById(orderID);
 		return order;
 	}
-	
+
 	/**
 	 * Function tạo order
 	 */
-	
+
 	@Override
 	@Transactional
 	public void createOrder(int accountID, OrderRequest request) throws CustomerException {
 		Cart cart = cartRepo.getById(accountID);
 		List<CartDetail> listCartDetail = cart.getListCartDetail();
-		
+
 		List<CartDetail> listCartDetail2 = new ArrayList<>();
 		String check = "Order";
-		
+
 		/**
-		 * Duyệt qua list cartDetail được lấy ra từ cart ( do cartID = accountID )
-		 * lọc những cartDetail có status = order cho vào 1 list riêng
+		 * Duyệt qua list cartDetail được lấy ra từ cart ( do cartID = accountID ) lọc
+		 * những cartDetail có status = order cho vào 1 list riêng
 		 */
 		for (CartDetail cartDetail : listCartDetail) {
 			if (cartDetail.getStatus().toString().equals(check)) {
@@ -85,38 +85,40 @@ public class OrderService implements IOrderService{
 		}
 		int quantity = 0;
 		Double totalPrice = 0.0;
-		
+
 		/**
-		 * Duyệt qua list cartDetail có status là order
-		 * Tính tổng số cartDetail và tổng tiền để gán vào khi tạo order
+		 * Duyệt qua list cartDetail có status là order Tính tổng số cartDetail và tổng
+		 * tiền để gán vào khi tạo order
 		 */
 		for (CartDetail cartDetail : listCartDetail2) {
-			 quantity = quantity + cartDetail.getQuantity();
-			 totalPrice = totalPrice + (cartDetail.getPrice()*cartDetail.getQuantity()-cartDetail.getPrice()*cartDetail.getQuantity()*cartDetail.getProduct().getDiscount()/100);
+			quantity = quantity + cartDetail.getQuantity();
+			totalPrice = totalPrice + (cartDetail.getPrice() * cartDetail.getQuantity()
+					- cartDetail.getPrice() * cartDetail.getQuantity() * cartDetail.getProduct().getDiscount() / 100);
 		}
-		Account account = accountRepo.getById(accountID);		
-		Order order = new Order((short) quantity, totalPrice,request.getFullname(), request.getAddress(),request.getPhone() ,account);
+		Account account = accountRepo.getById(accountID);
+		Order order = new Order((short) quantity, totalPrice, request.getFullname(), request.getAddress(),
+				request.getPhone(), account);
 		if (request.getAddress() == null || request.getPhone() == null || request.getFullname() == null) {
 			throw new CustomerException("Thông tin giao nhận hàng chưa đầy đủ");
 		}
 		orderRepo.save(order);
-		
+
 		/**
-		 * Duyệt qua list cartDetail có status là order
-		 * Tạo ra các orderDetail tương ứng với cartDetail
+		 * Duyệt qua list cartDetail có status là order Tạo ra các orderDetail tương ứng
+		 * với cartDetail
 		 */
 		for (CartDetail cartDetail : listCartDetail2) {
 			Product product = cartDetail.getProduct();
-			OrderDetail orderDetail = new OrderDetail(cartDetail.getPrice(), (short) cartDetail.getQuantity(),
-					order, product);
+			OrderDetail orderDetail = new OrderDetail(cartDetail.getPrice(), (short) cartDetail.getQuantity(), order,
+					product);
 			orderDetailRepo.save(orderDetail);
 			int cartID = cartDetail.getCart().getCart_id();
-			
+
 			/**
-			 * Đính kèm functin update lại giá trị của cart khi xóa cartDetail có status là order
-			 * update lại tổng số hàng tồn của từng product khi khách đặt hàng
+			 * Đính kèm functin update lại giá trị của cart khi xóa cartDetail có status là
+			 * order update lại tổng số hàng tồn của từng product khi khách đặt hàng
 			 */
-			updateCartDown(cartID, cartDetail);	
+			updateCartDown(cartID, cartDetail);
 			product.setQuantity((short) (product.getQuantity() - cartDetail.getQuantity()));
 			productRepo.save(product);
 		}
@@ -129,30 +131,33 @@ public class OrderService implements IOrderService{
 	public void updateCartDown(int cartID, CartDetail cartDetail) {
 		Cart cart = cartRepo.getById(cartID);
 		cart.setQuantity(cart.getQuantity() - cartDetail.getQuantity());
-		cart.setTotal_price(cart.getTotal_price() - (cartDetail.getPrice()*cartDetail.getQuantity()));
+		cart.setTotal_price(cart.getTotal_price() - (cartDetail.getPrice() * cartDetail.getQuantity()));
 		cartRepo.save(cart);
 	}
-	
+
 	/**
 	 * Function show all order cho admin
 	 */
-	
+
 	@Override
 	public Page<Order> getAllOrder(Pageable pageable) {
-		
+
 		return orderRepo.findAll(pageable);
 	}
-	
+
 	/**
 	 * Function filter order theo status cho admin
 	 */
 
 	@Override
 	public Page<Order> getAllOrderByStatus(OrderStatusEnum status, Pageable pageable) {
-		
+		if (status == null) {
+			return orderRepo.findAll(pageable);
+		}
+		;
 		return orderRepo.findByStatus(status, pageable);
 	}
-	
+
 	/**
 	 * Function duyệt đơn hàng và gửi email thông báo cho khách
 	 */
@@ -165,12 +170,12 @@ public class OrderService implements IOrderService{
 			order.setStatus(OrderStatusEnum.Active);
 			orderRepo.save(order);
 			sendConfirmOrderViaEmail(account.getEmail());
-		}else if (order.getStatus().toString() == "Active") {
+		} else if (order.getStatus().toString() == "Active") {
 			order.setStatus(OrderStatusEnum.End);
 			orderRepo.save(order);
-		}	
+		}
 	}
-	
+
 	/**
 	 * Function hủy đơn hàng và gửi email thông báo cho khách
 	 */
@@ -179,7 +184,7 @@ public class OrderService implements IOrderService{
 	public void endOrder(int orderID, OrderRequest request) throws CustomerException {
 		Order order = orderRepo.getById(orderID);
 		if (order == null) {
-			throw new NotFoundException("Đơn hàng không tồn tại");		
+			throw new NotFoundException("Đơn hàng không tồn tại");
 		}
 		Account account = order.getAccount();
 		for (OrderDetail orderDetail : order.getListOrderDetail()) {
@@ -191,8 +196,8 @@ public class OrderService implements IOrderService{
 			productRepo.save(product);
 		}
 		/**
-		 * admin sẽ viết mô tả lí do hủy đơn hàng
-		 * khách có thể vào phần chi tiết đơn hàng để check
+		 * admin sẽ viết mô tả lí do hủy đơn hàng khách có thể vào phần chi tiết đơn
+		 * hàng để check
 		 */
 		order.setDescription(request.getDescription());
 		order.setStatus(OrderStatusEnum.Delete);
@@ -200,31 +205,31 @@ public class OrderService implements IOrderService{
 			throw new CustomerException("Lý do hủy đơn hàng không thể để trống");
 		}
 		orderRepo.save(order);
-		
+
 		sendConfirmEndOrderViaEmail(account.getEmail());
 	}
 
 	@Override
 	public void deleteOrder(int orderID) {
 		orderRepo.deleteById(orderID);
-		
+
 	}
-	
+
 	@Override
 	public void sendConfirmOrderViaEmail(String email) {
 		eventPublisher.publishEvent(new OnSendOrderConfirmViaEmailEvent(email));
-		
+
 	}
-	
+
 	@Override
 	public void sendConfirmEndOrderViaEmail(String email) {
 		eventPublisher.publishEvent(new OnSendOrderConfirmEndViaEmailEvent(email));
-		
+
 	}
 
 	@Override
 	public Page<Order> findByUserId(int accountID, Pageable pageable) {
-		
+
 		return orderRepo.findByUserId(accountID, pageable);
 	}
 }
