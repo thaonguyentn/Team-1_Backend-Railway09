@@ -9,7 +9,7 @@ import com.vti.request.ProductRequest;
 
 public interface IProductService {
 
-	public Page<Product> getAllProducts(Pageable pageable, String search, ProductFilterRequest filter);
+	public Page<Product> getAllProducts(String category,Pageable pageable, String search, ProductFilterRequest filter);
 	
 	public Product getProductById(int id);
 	

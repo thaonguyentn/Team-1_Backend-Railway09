@@ -38,6 +38,8 @@ public class ProductSpecification implements Specification<Product>{
 				return builder.equal(root.get("memory").get("memoryName"),value.toString());
 			}else if (field.equalsIgnoreCase("ram.ramName")) {
 				return builder.equal(root.get("ram").get("ramName"),value.toString());
+			}else if (field.equalsIgnoreCase("category")) {
+				return builder.equal(root.get("category"),value.toString());
 			}
 		}
 		

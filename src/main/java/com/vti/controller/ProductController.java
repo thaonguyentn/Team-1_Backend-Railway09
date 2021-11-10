@@ -50,9 +50,9 @@ public class ProductController {
 	 */
 
 	@GetMapping()
-	public ResponseEntity<?> getAllProducts(Pageable pageable, @RequestParam(required = false) String search,
+	public ResponseEntity<?> getAllProducts(String category,Pageable pageable, @RequestParam(required = false) String search,
 			ProductFilterRequest filter) {
-		Page<Product> entities = productService.getAllProducts(pageable, search, filter);
+		Page<Product> entities = productService.getAllProducts(category,pageable, search, filter);
 
 		Page<ProductResponse> pageResponse = entities.map(new Function<Product, ProductResponse>() {
 
@@ -65,8 +65,7 @@ public class ProductController {
 							productImage.getProduct().getProductId(), productImage.getPath_image());
 					listResponse.add(imgresponse);
 				}
-				String phone = "Phone";
-				if (product.getCategory().toString().equals(phone)) {
+				if (product.getCategory().toString().equals("Phone")) {
 					ProductResponse response = new ProductResponse(product.getProductId(), product.getProductName(),
 							product.getDescription(), product.getPrice(), product.getRam().getRamName(),
 							product.getMemory().getMemoryName(), product.getBrand().getBrandName(),
@@ -118,13 +117,32 @@ public class ProductController {
 							productImage.getProduct().getProductId(), productImage.getPath_image());
 					listResponse.add(imgresponse);
 				}
-				ProductResponse response = new ProductResponse(product.getProductId(), product.getProductName(),
-						product.getDescription(), product.getPrice(), product.getRam().getRamName(),
-						product.getMemory().getMemoryName(), product.getBrand().getBrandName(), product.getCategory(),
-						product.getQuantity(), product.getCamera(), product.getColor(), product.getScreenSize(),
-						product.getOperatingSystem(), product.getChip(), product.getBattery(), product.getSim(),
-						product.getPathImage(), product.getDiscount(), listResponse, product.getEnterDate());
-				return response;
+				if (product.getCategory().toString().equals("Phone")) {
+					ProductResponse response = new ProductResponse(product.getProductId(), product.getProductName(),
+							product.getDescription(), product.getPrice(), product.getRam().getRamName(),
+							product.getMemory().getMemoryName(), product.getBrand().getBrandName(),
+							product.getCategory(), product.getQuantity(), product.getCamera(), product.getColor(),
+							product.getScreenSize(), product.getOperatingSystem(), product.getChip(),
+							product.getBattery(), product.getSim(), product.getPathImage(), product.getDiscount(),
+							listResponse, product.getEnterDate());
+					return response;
+				} else if (product.getCategory().toString().equals("PK")) {
+					ProductResponse response = new ProductResponse();
+					response.setId(product.getProductId());
+					response.setName(product.getProductName());
+					response.setImage(product.getPathImage());
+					response.setCategory(product.getCategory());
+					response.setDescription(product.getDescription());
+					response.setDiscount(product.getDiscount());
+					response.setPrice(product.getPrice());
+					response.setColor(product.getColor());
+					response.setQuantity(product.getQuantity());
+					response.setEnter_date(product.getEnterDate());
+					response.setListResponse(listResponse);
+					return response;
+				} else {
+					return null;
+				}
 			}
 		});
 		return new ResponseEntity<>(pageResponse, HttpStatus.OK);
@@ -150,13 +168,32 @@ public class ProductController {
 							productImage.getProduct().getProductId(), productImage.getPath_image());
 					listResponse.add(imgresponse);
 				}
-				ProductResponse response = new ProductResponse(product.getProductId(), product.getProductName(),
-						product.getDescription(), product.getPrice(), product.getRam().getRamName(),
-						product.getMemory().getMemoryName(), product.getBrand().getBrandName(), product.getCategory(),
-						product.getQuantity(), product.getCamera(), product.getColor(), product.getScreenSize(),
-						product.getOperatingSystem(), product.getChip(), product.getBattery(), product.getSim(),
-						product.getPathImage(), product.getDiscount(), listResponse, product.getEnterDate());
-				return response;
+				if (product.getCategory().toString().equals("Phone")) {
+					ProductResponse response = new ProductResponse(product.getProductId(), product.getProductName(),
+							product.getDescription(), product.getPrice(), product.getRam().getRamName(),
+							product.getMemory().getMemoryName(), product.getBrand().getBrandName(),
+							product.getCategory(), product.getQuantity(), product.getCamera(), product.getColor(),
+							product.getScreenSize(), product.getOperatingSystem(), product.getChip(),
+							product.getBattery(), product.getSim(), product.getPathImage(), product.getDiscount(),
+							listResponse, product.getEnterDate());
+					return response;
+				} else if (product.getCategory().toString().equals("PK")) {
+					ProductResponse response = new ProductResponse();
+					response.setId(product.getProductId());
+					response.setName(product.getProductName());
+					response.setImage(product.getPathImage());
+					response.setCategory(product.getCategory());
+					response.setDescription(product.getDescription());
+					response.setDiscount(product.getDiscount());
+					response.setPrice(product.getPrice());
+					response.setColor(product.getColor());
+					response.setQuantity(product.getQuantity());
+					response.setEnter_date(product.getEnterDate());
+					response.setListResponse(listResponse);
+					return response;
+				} else {
+					return null;
+				}
 			}
 		});
 		return new ResponseEntity<>(pageResponse, HttpStatus.OK);

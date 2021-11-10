@@ -24,19 +24,20 @@ public class ProductService implements IProductService {
 
 	@Autowired
 	private IProductRepository product_repo;
-	
+
 	@Autowired
 	private IProductRamRepository ramRepo;
-	
+
 	@Autowired
 	private IProductMemoryRepository memoryRepo;
-	
+
 	@Autowired
 	private IProductBrandRepository brandRepo;
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public Page<Product> getAllProducts(Pageable pageable, String search, ProductFilterRequest filter) {
+	public Page<Product> getAllProducts(String category, Pageable pageable, String search,
+			ProductFilterRequest filter) {
 		Specification<Product> where = null;
 
 		if (!StringUtils.isEmpty(search)) {
@@ -71,6 +72,14 @@ public class ProductService implements IProductService {
 				where = where.and(memoryFilter);
 			}
 		}
+		if (category != null) {
+			ProductSpecification categorySpecification = new ProductSpecification("category", "=", category);
+			if (where == null) {
+				where = Specification.where(categorySpecification);
+			} else {
+				where = where.and(categorySpecification);
+			}
+		}
 		return product_repo.findAll(where, pageable);
 	}
 
@@ -88,13 +97,13 @@ public class ProductService implements IProductService {
 
 	@Override
 	public Page<Product> findAllOrderByPriceDesc(Pageable pageable) {
-		
+
 		return product_repo.findAllOrderByPriceDesc(pageable);
 	}
 
 	@Override
 	public Page<Product> findAllOrderByPriceAsc(Pageable pageable) {
-		
+
 		return product_repo.findAllOrderByPriceAsc(pageable);
 	}
 
@@ -104,7 +113,7 @@ public class ProductService implements IProductService {
 		ProductBrand productBrand = brandRepo.findByBrandName(request.getBrand());
 		ProductMemory productMemory = memoryRepo.findByMemoryName(request.getMemory());
 		ProductRam productRam = ramRepo.findByRamName(request.getRam());
-		
+
 		product.setProductName(request.getName());
 		product.setDescription(request.getDescription());
 		product.setPrice(request.getPrice());
@@ -122,17 +131,17 @@ public class ProductService implements IProductService {
 		product.setSim(request.getSim());
 		product.setDiscount(request.getDiscount());
 		product.setPathImage(request.getImage());
-		
+
 		product_repo.save(product);
 	}
 
 	@Override
 	public void updateProduct(int productID, ProductRequest request) {
-		Product product = product_repo.getById(productID);	
+		Product product = product_repo.getById(productID);
 		ProductBrand productBrand = brandRepo.findByBrandName(request.getBrand());
 		ProductMemory productMemory = memoryRepo.findByMemoryName(request.getMemory());
 		ProductRam productRam = ramRepo.findByRamName(request.getRam());
-		
+
 		product.setProductName(request.getName());
 		product.setDescription(request.getDescription());
 		product.setPrice(request.getPrice());
@@ -150,7 +159,7 @@ public class ProductService implements IProductService {
 		product.setSim(request.getSim());
 		product.setDiscount(request.getDiscount());
 		product.setPathImage(request.getImage());
-		
+
 		product_repo.save(product);
 	}
 
