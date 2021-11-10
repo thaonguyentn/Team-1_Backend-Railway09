@@ -64,14 +64,32 @@ public class ProductController {
 							productImage.getProduct().getProductId(), productImage.getPath_image());
 					listResponse.add(imgresponse);
 				}
-				
-				ProductResponse response = new ProductResponse(product.getProductId(), product.getProductName(),
+				String phone="Phone";
+				if (product.getCategory().toString().equals(phone)) {
+					ProductResponse response = new ProductResponse(product.getProductId(), product.getProductName(),
 						product.getDescription(), product.getPrice(), product.getRam().getRamName(),
 						product.getMemory().getMemoryName(), product.getBrand().getBrandName(), product.getCategory(),
 						product.getQuantity(), product.getCamera(), product.getColor(), product.getScreenSize(),
 						product.getOperatingSystem(), product.getChip(), product.getBattery(), product.getSim(),
 						product.getPathImage(), product.getDiscount(),listResponse, product.getEnterDate());
 				return response;
+				}else if(product.getCategory().toString().equals("PK")) {
+					ProductResponse response=new ProductResponse();
+					response.setId(product.getProductId());
+					response.setName(product.getProductName());
+					response.setDescription(product.getDescription());
+					response.setDiscount(product.getDiscount());
+					response.setPrice(product.getPrice());
+					response.setColor(product.getColor());
+					response.setQuantity(product.getQuantity());
+					response.setEnter_date(product.getEnterDate());
+					response.setBrand(product.getBrand().getBrandName());
+					response.setListResponse(listResponse);
+					return response;
+				}else {
+				return null;
+				}
+				
 			}
 		});
 		return new ResponseEntity<>(pageResponse, HttpStatus.OK);
