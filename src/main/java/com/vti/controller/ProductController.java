@@ -50,9 +50,9 @@ public class ProductController {
 	 */
 
 	@GetMapping()
-	public ResponseEntity<?> getAllProducts(String category,Pageable pageable, @RequestParam(required = false) String search,
-			ProductFilterRequest filter) {
-		Page<Product> entities = productService.getAllProducts(category,pageable, search, filter);
+	public ResponseEntity<?> getAllProducts(String category, Pageable pageable,
+			@RequestParam(required = false) String search, ProductFilterRequest filter) {
+		Page<Product> entities = productService.getAllProducts(category, pageable, search, filter);
 
 		Page<ProductResponse> pageResponse = entities.map(new Function<Product, ProductResponse>() {
 
@@ -230,8 +230,7 @@ public class ProductController {
 					product.getColor(), product.getPathImage(), product.getDiscount(), listResponse,
 					product.getEnterDate());
 			return new ResponseEntity<AccessoryResponse>(response, HttpStatus.OK);
-		}
-		{
+		} else {
 			return null;
 		}
 

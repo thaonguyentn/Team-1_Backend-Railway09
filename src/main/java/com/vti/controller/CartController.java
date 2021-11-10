@@ -17,6 +17,7 @@ import com.vti.entity.Cart;
 import com.vti.entity.CartDetail;
 import com.vti.entity.Product;
 import com.vti.exception.NotFoundException;
+import com.vti.response.AccessoryResponse;
 import com.vti.response.CartDetailResponse;
 import com.vti.response.CartResponse;
 import com.vti.response.ProductResponse;
@@ -65,12 +66,31 @@ public class CartController {
 			cartDetailResponse.setPrice(cartDetail.getPrice());
 			cartDetailResponse.setQuantity(cartDetail.getQuantity());
 			Product product = cartDetail.getProduct();
-			ProductResponse productResponse = new ProductResponse(product.getProductId(), product.getProductName(),
-					product.getDescription(), product.getPrice(), product.getRam().getRamName(), product.getMemory().getMemoryName(),
-					product.getBrand().getBrandName(), product.getCategory(), product.getQuantity(),product.getCamera(),product.getColor(),
-					product.getScreenSize(),product.getOperatingSystem(), product.getChip(),product.getBattery(),
-					product.getSim() ,product.getPathImage(),product.getDiscount() ,product.getEnterDate());
-			cartDetailResponse.setProduct(productResponse);
+			if (product.getCategory().equals("Phone")) {
+				ProductResponse productResponse = new ProductResponse(product.getProductId(), product.getProductName(),
+						product.getDescription(), product.getPrice(), product.getRam().getRamName(),
+						product.getMemory().getMemoryName(), product.getBrand().getBrandName(), product.getCategory(),
+						product.getQuantity(), product.getCamera(), product.getColor(), product.getScreenSize(),
+						product.getOperatingSystem(), product.getChip(), product.getBattery(), product.getSim(),
+						product.getPathImage(), product.getDiscount(), product.getEnterDate());
+				cartDetailResponse.setProduct(productResponse);
+			} else if (product.getCategory().equals("PK")) {
+				ProductResponse productResponse = new ProductResponse();
+				productResponse.setId(product.getProductId());
+				productResponse.setName(product.getProductName());
+				productResponse.setImage(product.getPathImage());
+				productResponse.setCategory(product.getCategory());
+				productResponse.setDescription(product.getDescription());
+				productResponse.setDiscount(product.getDiscount());
+				productResponse.setPrice(product.getPrice());
+				productResponse.setColor(product.getColor());
+				productResponse.setQuantity(product.getQuantity());
+				productResponse.setEnter_date(product.getEnterDate());
+				cartDetailResponse.setProduct(productResponse);
+			} else {
+				return null;
+			}
+			
 			cartDetailResponse.setStatus(cartDetail.getStatus());
 			listRespone.add(cartDetailResponse);
 		}
