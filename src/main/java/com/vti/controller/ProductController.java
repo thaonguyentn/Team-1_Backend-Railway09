@@ -77,6 +77,7 @@ public class ProductController {
 					ProductResponse response=new ProductResponse();
 					response.setId(product.getProductId());
 					response.setName(product.getProductName());
+					response.setImage(product.getPathImage());
 					response.setDescription(product.getDescription());
 					response.setDiscount(product.getDiscount());
 					response.setPrice(product.getPrice());
