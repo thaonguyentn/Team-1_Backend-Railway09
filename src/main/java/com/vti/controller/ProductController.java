@@ -83,7 +83,6 @@ public class ProductController {
 					response.setColor(product.getColor());
 					response.setQuantity(product.getQuantity());
 					response.setEnter_date(product.getEnterDate());
-					response.setBrand(product.getBrand().getBrandName());
 					response.setListResponse(listResponse);
 					return response;
 				}else {
